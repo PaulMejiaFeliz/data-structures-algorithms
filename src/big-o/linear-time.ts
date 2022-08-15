@@ -19,6 +19,7 @@ function findNemo(array: string[]) {
   for (let i = 0; i < array.length; i++) {
     if (array[i] === 'nemo') {
       console.log('Found NEMO!');
+      break;
     }
   }
 }
@@ -26,5 +27,5 @@ function findNemo(array: string[]) {
 console.log('Finding Nemo');
 
 // findNemo(nemo);
-// findNemo(everyone);
-findNemo(large); // O(n) --> Linear Time
+findNemo(everyone);
+// findNemo(large); // O(n) --> Linear Time
