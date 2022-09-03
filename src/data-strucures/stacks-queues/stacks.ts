@@ -5,7 +5,6 @@ class Node<T> {
 
 class Stack<T> {
   top: Node<T> | undefined = undefined;
-  bottom: Node<T> | undefined = undefined;
   length = 0;
 
   peek(): T | undefined {
@@ -14,13 +13,6 @@ class Stack<T> {
 
   push(value: T): void {
     const node = new Node(value);
-
-    if (!this.length) {
-      this.bottom = node;
-      this.top = node;
-      this.length = 1;
-      return;
-    }
 
     node.next = this.top;
     this.top = node;
@@ -36,10 +28,6 @@ class Stack<T> {
 
     this.top = this.top.next;
     this.length--;
-
-    if (!this.top) {
-      this.bottom = undefined;
-    }
 
     return value;
   }
@@ -57,5 +45,7 @@ console.log(myStack.pop());
 console.log(myStack.pop());
 console.log(myStack.pop());
 console.log(myStack.pop());
+
+console.log('PEEK', myStack.peek());
 
 export {};
