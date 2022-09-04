@@ -96,14 +96,20 @@ class BinarySearchTree<T> {
     }
 
     if (replacementNode) {
-      replacementNode.left = targetNode.left;
-      replacementNode.right = targetNode.right;
-    }
+      if (replacementParentNode === targetNode) {
+        if (replacementParentNode.right === replacementNode) {
+          replacementNode.left = targetNode.left;
+        }
+      } else {
+        if (replacementParentNode.right === replacementNode) {
+          replacementParentNode.right = null;
+        } else {
+          replacementParentNode.left = replacementNode.right;
+        }
 
-    if (replacementParentNode.right === replacementNode) {
-      replacementParentNode.right = null;
-    } else {
-      replacementParentNode.left = null;
+        replacementNode.left = targetNode.left;
+        replacementNode.right = targetNode.right;
+      }
     }
 
     if (!parentNode) {
