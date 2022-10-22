@@ -1,8 +1,14 @@
-class MinHeap {
-  private heap: number[];
+abstract class Heap<T> {
+  private heap: T[];
+  protected abstract compare(a: T, b: T): number;
 
-  constructor() {
+  constructor(elements?: T[]) {
     this.heap = [];
+
+    if (elements) {
+      this.heap = elements;
+      this.heapify();
+    }
   }
 
   private heapify(): void {
@@ -12,7 +18,7 @@ class MinHeap {
     }
   }
 
-  private size(): number {
+  size(): number {
     return this.heap.length;
   }
 
@@ -20,28 +26,28 @@ class MinHeap {
     return this.size() === 0;
   }
 
-  add(element: number): void {
+  add(element: T): void {
     this.heap.push(element);
     this.swim(this.size() - 1);
   }
 
-  peek(): number | null {
+  peek(): T | null {
     if (this.isEmpty()) return null;
 
     return this.heap[0];
   }
 
-  contains(element: number): boolean {
+  contains(element: T): boolean {
     return this.heap.includes(element);
   }
 
-  poll(): number | null {
+  poll(): T | null {
     if (this.isEmpty()) return null;
 
     return this.removeAt(0);
   }
 
-  remove(element: number): boolean {
+  remove(element: T): boolean {
     const elementIndex = this.heap.indexOf(element);
     if (elementIndex === -1) return false;
 
@@ -83,7 +89,7 @@ class MinHeap {
     }
   }
 
-  private removeAt(indexToRemove: number): number {
+  private removeAt(indexToRemove: number): T {
     const removedValue = this.heap[indexToRemove];
 
     const indexOfLastElement = this.size() - 1;
@@ -97,17 +103,19 @@ class MinHeap {
     const elementToBeHeapified = this.heap[indexToBeHeapified];
     this.sink(indexToBeHeapified);
 
-    if (this.heap[indexToBeHeapified] === elementToBeHeapified) {
+    if (
+      this.compare(this.heap[indexToBeHeapified], elementToBeHeapified) === 0
+    ) {
       this.swim(indexToBeHeapified);
     }
 
     return removedValue;
   }
 
-  private swap(i: number, j: number) {
-    const temp = this.heap[i];
-    this.heap[i] = this.heap[j];
-    this.heap[j] = temp;
+  private swap(a: number, b: number) {
+    const temp = this.heap[a];
+    this.heap[a] = this.heap[b];
+    this.heap[b] = temp;
   }
 
   private getParentIndex(childIndex: number): number {
@@ -122,7 +130,19 @@ class MinHeap {
     return parentIndex * 2 + 2;
   }
 
-  private less(i: number, j: number): boolean {
-    return this.heap[i] < this.heap[j];
+  private less(a: number, b: number): boolean {
+    return this.compare(this.heap[a], this.heap[b]) < 0;
+  }
+}
+
+export class MinHeap<T extends number> extends Heap<T> {
+  protected compare(a: T, b: T): number {
+    return a - b;
+  }
+}
+
+export class MaxHeap<T extends number> extends Heap<T> {
+  protected compare(a: T, b: T): number {
+    return b - a;
   }
 }
